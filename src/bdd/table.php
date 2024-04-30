@@ -31,10 +31,25 @@ try {
             Nom VARCHAR(255),
             Prenom VARCHAR(255),
             Matricule VARCHAR(10),
+            Email VARCHAR(255),
+            Photo VARCHAR(255),            
             ID_Promotion INT,
             ID_Faculte INT,
+          
             FOREIGN KEY (ID_Promotion) REFERENCES Promotions(ID_Promotion),
             FOREIGN KEY (ID_Faculte) REFERENCES Facultes(ID_Faculte)
+        );
+    ");
+    // Table admin
+    $base->exec("
+        
+        CREATE TABLE Admin (
+            ID_Admin INT PRIMARY KEY AUTO_INCREMENT,
+            Nom VARCHAR(255),
+            Prenom VARCHAR(255),
+            Email VARCHAR(255),
+            Photo VARCHAR(255)            
+           
         );
     ");
     // Table des sessions électorales
