@@ -142,7 +142,9 @@ include('bdd/connexion.php');
                             // include("class_livre.php");
                             $etudiant = new Etudiant(null,$Nom,$Prenom, $Matricule, $Email, $_FILES['Photo']['name'],$ID_Promotion,$ID_Faculte);
                             $etudiant->Faire_inscription();
-                            
+                            // echo "<script>
+                            //      var notification = alertify.notify('Electeur enregistré', 'success', 5, function(){  console.log('dismissed'); });
+                            // </script>";
                         }
                     } else {
                         $afficher = "extension non autoriser";
