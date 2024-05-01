@@ -29,7 +29,7 @@ class  Session_electorale
         // echo $reqexist;
         if ($reqexist == 0) {
             $req = $base->prepare('INSERT INTO sessions_electorales(Date,Detail) 
-                    VALUES(?)');
+                    VALUES(?,?)');
             $req->execute(array($this->Date,$this->Detail)) or die(print_r($base->errorInfo()));
             echo "
                 <script>

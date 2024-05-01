@@ -70,6 +70,7 @@ try {
             ID_Electeur INT,
             ID_Poste INT,
             ID_Session INT,
+            Photo VARCHAR(255), 
             FOREIGN KEY (ID_Electeur) REFERENCES Electeurs(ID_Electeur),
             FOREIGN KEY (ID_Poste) REFERENCES Postes(ID_Poste),
             FOREIGN KEY (ID_Session) REFERENCES Sessions_Electorales(ID_Session)

@@ -67,7 +67,7 @@ include("entete.php");
                 </a>
             </div>
             <div class="w-full px-6 sm:w-1/2 xl:w-1/3 mt-5 adm_card">
-                <a href="electeur.php">
+                <a href="candidat.php">
                     <div class="flex items-center px-5 py-6 shadow-md rounded-md bg-slate-100">
                         <div class="p-3 rounded-full bg-indigo-600 bg-opacity-75">
                             <svg class="h-8 w-8 text-white" viewBox="0 0 28 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -81,8 +81,8 @@ include("entete.php");
                         </div>
 
                         <div class="mx-5">
-                            <h4 class="text-2xl font-semibold text-gray-700">4644</h4>
-                            <div class="text-gray-500">Ajouter Electeurs</div>
+                            <h4 class="text-2xl font-semibold text-gray-700">Poser Candidature</h4>
+                            <div class="text-gray-500">pour une session electorale</div>
                         </div>
                     </div>
                 </a>

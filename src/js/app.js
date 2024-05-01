@@ -52,3 +52,18 @@ document.addEventListener("DOMContentLoaded", function () {
     secondSection.classList.add("hidden");
   });
 });
+
+// wone de recherche
+$(document).ready(function () {
+  $("#recherche").on("input", function () {
+    var recherche = $(this).val();
+    $.ajax({
+      url: "rechercher.php",
+      type: "GET",
+      data: { recherche: recherche },
+      success: function (response) {
+        $("#options").html(response);
+      },
+    });
+  });
+});

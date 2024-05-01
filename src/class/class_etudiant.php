@@ -49,10 +49,9 @@ class Etudiant extends Electeur
 
         if (filter_var($this->Email, FILTER_VALIDATE_EMAIL)) {
             //verifions si le mail existe deja
-            $reqmatri = $base->prepare("SELECT * FROM Electeurs WHERE Matricule=?");
-            $reqmatri->execute(array($this->Matricule));
+            $reqmatri = $base->prepare("SELECT * FROM Electeurs WHERE Matricule=? and Nom=? and Prenom=? and Email=?");
+            $reqmatri->execute(array($this->Matricule, $this->Nom, $this->Prenom, $this->Email));
             $matriexist = $reqmatri->rowCount();
-            echo $matriexist;
             if ($matriexist == 0) {
                 $req = $base->prepare('INSERT INTO Electeurs(Nom,Prenom, Matricule, Email,Photo,ID_Promotion,ID_Faculte) 
                     VALUES(?,?,?,?,?,?,?)');
@@ -68,7 +67,10 @@ class Etudiant extends Electeur
                      ";
             } else {
                 // $afficher = "Mail déja utilisé!!";
-                echo "<script>alert('cette personne existe  déja!!')</script>";
+                echo "<script>
+                alert('cette personne existe  déja!!')
+                 var notification = alertify.error('cette personne existe  déja!', 'success', 5, function(){  console.log('dismissed'); });
+                </script>";
             }
         } else {
             // $afficher = "Adresse Mail non valide";

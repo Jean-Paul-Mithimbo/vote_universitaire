@@ -1,6 +1,6 @@
 <?php
 include("entete.php");
-include("class/class_poste.php");
+include("class/class_session_elect.php");
 include("bdd/connexion.php");
 
 ?>
@@ -22,11 +22,11 @@ include("bdd/connexion.php");
 
                     <div>
                         <label for="Date" class="sr-only">Date Session</label>
-                        <input id="Date" name="Date" type="date" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Nom du poste">
+                        <input id="Date" name="Date" type="date" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Date de la session">
                     </div>
                     <div>
                         <label for="Detail" class="sr-only">Description Session</label>
-                        <input id="Detail" name="Detail" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Nom du poste">
+                        <input id="Detail" name="Detail" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Description Session">
                     </div>
                 </div>
 
@@ -53,8 +53,8 @@ include("bdd/connexion.php");
             $Detail =  $_POST['Detail'];
 
             if ($Detail != "" and $Date != "") {
-                $poste = new Poste(null, $Nom_Poste);
-                $poste->creer_poste();
+                $session_elect = new Session_electorale(null, $Date,$Detail);
+                $session_elect->creer_Session_electorale();
             }
         }
     } catch (Exception $exept) {
