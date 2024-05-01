@@ -140,7 +140,7 @@ include('bdd/connexion.php');
             // Vérifions que le fichier a été transmis sans erreurs
             if (isset($_FILES['Photo']) && $_FILES['Photo']['error'] == 0) {
                 // Vérifions la taille du fichier
-                if ($_FILES['Photo']['size'] < 5000000) { // 15 mégaoctets
+                if ($_FILES['Photo']['size'] < 5000000) { // 5 mégaoctets
                     // Stockons le nom du fichier dans une variable
                     $nom_fichier = pathinfo($_FILES['Photo']['name']);
 
@@ -166,7 +166,7 @@ include('bdd/connexion.php');
                         echo "<script>alert('Extension de fichier non autorisée');</script>";
                     }
                 } else {
-                    echo "<script>alert('La taille du fichier dépasse 15 Mo');</script>";
+                    echo "<script>alert('La taille du fichier dépasse 5 Mo');</script>";
                 }
             }
         }
