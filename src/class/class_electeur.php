@@ -5,6 +5,6 @@ abstract class Electeur
 {
 
     // Méthode abstraite pour voter 
-    abstract public function voter();
+    abstract public function voter($ID_Candidat);
 }
 ?>

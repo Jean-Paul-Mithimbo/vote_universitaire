@@ -77,11 +77,67 @@ class Etudiant extends Electeur
             echo "alert('Adresse Mail non valide')";
         }
     }
-
-    // Implémentation de la méthode pour supprimer l'étudiant de la base de données
-    public function voter()
+        public function Verifier_etudiant()
     {
-        // Implémentation spécifique pour supprimer un étudiant
-        echo "Suppression de l'étudiant de la base de données...";
+        require('bdd/connexion.php');
+        // Vérifions si le matricule existe déjà
+        $reqmatri = $base->prepare("SELECT * FROM Electeurs WHERE Matricule = ?");
+        $reqmatri->execute(array($this->Matricule));
+        $matriexist = $reqmatri->rowCount();
+
+        if ($matriexist != 0) {
+            if ($res = $reqmatri->fetch()) {
+                $_SESSION['ID_Electeur'] = $res['ID_Electeur'];
+                $_SESSION['Nom'] = $res['Nom'];
+                $_SESSION['Prenom'] = $res['Prenom'];
+                $_SESSION['Photo'] = $res['Photo'];
+            }
+        } else {
+            unset($_SESSION['ID_Electeur']);
+            echo "<script>
+                alert('Cette personne n\'existe pas!');
+                alertify.error('Cette personne n\'existe pas', 5, function() { console.log('dismissed'); });
+              </script>";
+        }
+    }
+
+
+    // Implémentation de la méthode pour inserer les votes dans la base de donné
+    public function voter($ID_Candidat)
+    {
+        require('bdd/connexion.php');
+        // verifion le poste du candidat
+        $req = $base->prepare("SELECT ID_Poste FROM Candidats WHERE ID_Candidat = ?");
+        $req->execute(array($ID_Candidat));
+        $res = $req->rowCount();
+
+        if ($res != 0){
+            $ID_Poste = $res['ID_Poste'];
+        }
+
+
+        // Vérifions si le matricule existe déjà
+        $reqvote = $base->prepare("SELECT * FROM Votes WHERE ID_Candidat = ?  and ID_Electeur=?");
+        $reqvote->execute(array($ID_Candidat, $this->ID_Electeur));
+        $voteExist = $reqvote->rowCount();
+
+        if ($voteExist == 0) {
+            $req = $base->prepare('INSERT INTO Votes(ID_Candidat,ID_Electeur) 
+                    VALUES(?,?)');
+            $req->execute(array($ID_Candidat, $this->ID_Electeur)) or die(print_r($base->errorInfo()));
+            echo "
+                     <script>
+                         var notification = alertify.notify('Vote éffectué', 'success', 5, function(){  console.log('dismissed'); });
+                     </script>
+                     ";
+
+           
+        } else {
+            unset($_SESSION['ID_Electeur']);
+            echo "<script>
+                alert('Cette personne a déjà voter');
+                alertify.error('Cette personne a déjà voter', 5, function() { console.log('dismissed'); });
+              </script>";
+        }
     }
 }
