@@ -174,8 +174,13 @@ include("menu.php");
     <?php }
         if (isset($_SESSION['ID_Electeur']) and isset($_SESSION['Preso']) and isset($_SESSION['Sec'])) {
             $etud = new Etudiant($_SESSION['ID_Electeur'], null, null,  null, null, null, null, null);
-            $etud->Voter($_SESSION['Preso']);
-            $etud->Voter($_SESSION['Sec']);
+            $etud->Voter($_SESSION['Preso'], $_SESSION["ID_Session_electorale"]);
+            $etud->Voter($_SESSION['Sec'], $_SESSION["ID_Session_electorale"]);
+
+            unset($_SESSION['ID_Electeur']);
+            unset($_SESSION['Sec']);
+            unset($_SESSION['Preso']);
+            echo "<script>window.location.replace('espace_vote.php');</script>";
         }
     }
     ?>

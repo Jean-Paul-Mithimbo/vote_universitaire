@@ -103,41 +103,53 @@ class Etudiant extends Electeur
 
 
     // Implémentation de la méthode pour inserer les votes dans la base de donné
-    public function voter($ID_Candidat)
+    public function voter($ID_Candidat, $ID_Session)
     {
         require('bdd/connexion.php');
-        // verifion le poste du candidat
+
+        // Vérifions le poste du candidat
         $req = $base->prepare("SELECT ID_Poste FROM Candidats WHERE ID_Candidat = ?");
         $req->execute(array($ID_Candidat));
-        $res = $req->rowCount();
+        $res = $req->fetch(PDO::FETCH_ASSOC);  // Utilisez fetch au lieu de rowCount pour obtenir la ligne
 
-        if ($res != 0){
+        if ($res !== false) {
             $ID_Poste = $res['ID_Poste'];
-        }
 
+            // Vérifions si l'électeur a déjà voté pour ce poste dans cette session
+            $reqvote = $base->prepare("SELECT COUNT(*) AS NombreVotes
+            FROM Votes v
+            JOIN Candidats c ON v.ID_Candidat = c.ID_Candidat
+            JOIN Sessions_Electorales s ON c.ID_Session = s.ID_Session
+            WHERE v.ID_Electeur = ?
+            AND s.ID_Session = ?
+            AND c.ID_Poste = ?");
 
-        // Vérifions si le matricule existe déjà
-        $reqvote = $base->prepare("SELECT * FROM Votes WHERE ID_Candidat = ?  and ID_Electeur=?");
-        $reqvote->execute(array($ID_Candidat, $this->ID_Electeur));
-        $voteExist = $reqvote->rowCount();
+            $reqvote->execute(array($this->ID_Electeur, $ID_Session, $ID_Poste));
+            $voteExist = $reqvote->fetchColumn();  // Utilisez fetchColumn pour obtenir directement le nombre de votes
 
-        if ($voteExist == 0) {
-            $req = $base->prepare('INSERT INTO Votes(ID_Candidat,ID_Electeur) 
-                    VALUES(?,?)');
-            $req->execute(array($ID_Candidat, $this->ID_Electeur)) or die(print_r($base->errorInfo()));
-            echo "
-                     <script>
-                         var notification = alertify.notify('Vote éffectué', 'success', 5, function(){  console.log('dismissed'); });
-                     </script>
-                     ";
+            if ($voteExist == 0) {
+                $req = $base->prepare('INSERT INTO Votes(ID_Candidat, ID_Electeur) VALUES(?, ?)');
+                $req->execute(array($ID_Candidat, $this->ID_Electeur));
 
-           
-        } else {
-            unset($_SESSION['ID_Electeur']);
-            echo "<script>
-                alert('Cette personne a déjà voter');
-                alertify.error('Cette personne a déjà voter', 5, function() { console.log('dismissed'); });
+                echo "
+                 <script>
+                     var notification = alertify.notify('Vote effectué', 'success', 5, function(){ console.log('dismissed'); });
+                 </script>
+                 ";
+            } else {
+                unset($_SESSION['ID_Electeur']);
+
+                echo "<script>
+                alert('Cette personne a déjà voté');
+                alertify.error('Cette personne a déjà voté', 5, function() { console.log('dismissed'); });
               </script>";
+            }
+        } else {
+            echo "<script>
+            alert('Candidat non trouvé');
+            alertify.error('Candidat non trouvé', 5, function() { console.log('dismissed'); });
+          </script>";
         }
     }
+
 }
